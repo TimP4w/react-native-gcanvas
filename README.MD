@@ -1,9 +1,13 @@
 # @flyskywhy/react-native-gcanvas
 
-[![npm version](http://img.shields.io/npm/v/@flyskywhy/react-native-gcanvas.svg?style=flat-square)](https://npmjs.org/package/@flyskywhy/react-native-gcanvas "View this project on npm")
-[![npm downloads](http://img.shields.io/npm/dm/@flyskywhy/react-native-gcanvas.svg?style=flat-square)](https://npmjs.org/package/@flyskywhy/react-native-gcanvas "View this project on npm")
-[![npm licence](http://img.shields.io/npm/l/@flyskywhy/react-native-gcanvas.svg?style=flat-square)](https://npmjs.org/package/@flyskywhy/react-native-gcanvas "View this project on npm")
-[![Platform](https://img.shields.io/badge/platform-ios%20%7C%20android-989898.svg?style=flat-square)](https://npmjs.org/package/@flyskywhy/react-native-gcanvas "View this project on npm")
+## Fork
+
+This fork simply removes the line to "fix" the `More than one file was found with OS independent path 'lib/armeabi-v7a/libfreetype.so'` error while building. See [Android Docs](https://developer.android.com/studio/releases/gradle-plugin#cmake-imported-targets).
+
+[![npm version](http://img.shields.io/npm/v/@flyskywhy/react-native-gcanvas.svg?style=flat-square)](https://npmjs.org/package/@flyskywhy/react-native-gcanvas 'View this project on npm')
+[![npm downloads](http://img.shields.io/npm/dm/@flyskywhy/react-native-gcanvas.svg?style=flat-square)](https://npmjs.org/package/@flyskywhy/react-native-gcanvas 'View this project on npm')
+[![npm licence](http://img.shields.io/npm/l/@flyskywhy/react-native-gcanvas.svg?style=flat-square)](https://npmjs.org/package/@flyskywhy/react-native-gcanvas 'View this project on npm')
+[![Platform](https://img.shields.io/badge/platform-ios%20%7C%20android-989898.svg?style=flat-square)](https://npmjs.org/package/@flyskywhy/react-native-gcanvas 'View this project on npm')
 
 `@flyskywhy/react-native-gcanvas` is a C++ native canvas component based on gpu opengl glsl shader [GCanvas](https://alibaba.github.io/GCanvas/) which is a lightweight cross-platform graphics rendering engine for mobile devices developed by Alibaba. It is written with C++ based on OpenGL ES, so it can provide high performance 2D/WebGL rendering capabilities for JavaScript runtime. It also has browser-like canvas APIs, so it's very convenient and flexiable for use, especially for web developers.
 
@@ -22,16 +26,17 @@ Since Alibaba [feat: delete weex bridge & reactive bridge](https://github.com/al
 - [Contributing](#contributing)
 - [License](#license)
 
-
 ## Performance Test Result
 
 ### `setState` vs `canvas` On react-native-web
+
 With 200 circles backgroundColor generate (1 `ms`) and render continually, the render `ms` and final `fps` with Chrome Performance on Windows:
 
     setState  80 ms        means 12 fps  (stuck for human eyes)
     canvas    1.5 ms       means 400 fps (smooth for human eyes)
 
 ### `setNativeProps` vs `expo-2d-context` vs `react-native-gcanvas` On react-native
+
 With 800 circles backgroundColor generate and render continually, the final UI `fps` and JS `fps` with react-native developer menu Perf Monitor on an old `Huawei Honor 6 Play` smartphone released in 2017 (Mediatek MT6737T 1.4 GHz, 2 GB RAM, Android 6):
 
     setNativeProps        UI: 20 fps       JS: 1 fps  (stuck for human eyes)
@@ -56,30 +61,34 @@ With 1400 circles backgroundColor generate and render continually
     // if render2d sync by dispatch_main_sync_safe with execCommandById() of ios/BridgeModule/GCanvasModule.m
     react-native-gcanvas  UI: 40 fps       JS: 15 fps (very very stuck for human eyes)
 
-
 ## Convenient With Browser-like canvas APIs
+
 [gl-react](https://gl-react-cookbook.surge.sh/pixeleditor?menu=true) maybe can deal with the performance problem, but it need developer directly code with GLSL (OpenGL Shading Language), and there is no way to let many React components developed by browser-like canvas APIs be easily ported to React Native.
 
 [react-three-fiber](https://github.com/pmndrs/react-three-fiber) maybe can deal with the performance problem, but [memory leak when meshes update](https://github.com/pmndrs/react-three-fiber/issues/263), [Leaking WebGLRenderer and more when unmounting](https://github.com/pmndrs/react-three-fiber/issues/514), [Suggestion: Dispose of renderer context when canvas is destroyed?](https://github.com/pmndrs/react-three-fiber/issues/132), and there is no way to let many React components developed by browser-like canvas APIs be easily ported to React Native.
 
 [expo-2d-context](https://github.com/expo/expo-2d-context) can let many React components developed by browser-like canvas APIs be easily ported to React Native, but it need ctx.flush() that not belongs to canvas 2d APIs, and it's performance is too low.
 
-Ref to [Experiments with High Performance Animation in React Native](https://engineering.salesforce.com/experiments-with-high-performance-animation-in-react-native-80a0cb7052b0), it use many ways include `setNativeProps` and [React Native NanoVG](https://github.com/robclouth/react-native-art-nanovg). Maybe `nanovg` can deal with the performance problem, but for now (2020.12) there is no React Native canvas component using  `nanovg` to let many React components developed by browser-like canvas APIs be easily ported to React Native.
+Ref to [Experiments with High Performance Animation in React Native](https://engineering.salesforce.com/experiments-with-high-performance-animation-in-react-native-80a0cb7052b0), it use many ways include `setNativeProps` and [React Native NanoVG](https://github.com/robclouth/react-native-art-nanovg). Maybe `nanovg` can deal with the performance problem, but for now (2020.12) there is no React Native canvas component using `nanovg` to let many React components developed by browser-like canvas APIs be easily ported to React Native.
 
 So for now (2020.12), `@flyskywhy/react-native-gcanvas` is the best choice, at least on Android (performance on iOS is lower than setNativeProps).
 
 ### canvas projects ported from React to React Native
-* [react-native-particles-bg](https://github.com/flyskywhy/react-native-particles-bg) just ported one file to [Support react-native](https://github.com/flyskywhy/react-native-particles-bg/commit/637ab13) from [particles-bg](https://github.com/lindelof/particles-bg) which based on [Proton](https://github.com/drawcall/Proton). You can also compare it with [react-native-particles-webgl](https://github.com/flyskywhy/react-native-particles-webgl) which based on memory leaking [react-three-fiber](https://github.com/pmndrs/react-three-fiber).
 
+- [react-native-particles-bg](https://github.com/flyskywhy/react-native-particles-bg) just ported one file to [Support react-native](https://github.com/flyskywhy/react-native-particles-bg/commit/637ab13) from [particles-bg](https://github.com/lindelof/particles-bg) which based on [Proton](https://github.com/drawcall/Proton). You can also compare it with [react-native-particles-webgl](https://github.com/flyskywhy/react-native-particles-webgl) which based on memory leaking [react-three-fiber](https://github.com/pmndrs/react-three-fiber).
 
 ## Getting Started
+
 ### react-native
+
 Support RN >= 0.60
 
     npm install @flyskywhy/react-native-gcanvas --save
 
 #### Android
+
 Add below into `android/settings.gradle`
+
 ```
 include ':android:gcanvas_library'
 project(':android:gcanvas_library').projectDir = new File(rootProject.projectDir, '../node_modules/@flyskywhy/react-native-gcanvas/android/gcanvas_library')
@@ -92,6 +101,7 @@ project(':android:adapters:bridge_adapter').projectDir = new File(rootProject.pr
 ```
 
 Add below into `react-native.config.js`
+
 ```
 const path = require('path');
 
@@ -111,16 +121,18 @@ module.exports = {
 #### iOS
 
 Add below into `ios/Podfile`
+
 ```
   pod "GCanvas", :path => "../node_modules/@flyskywhy/react-native-gcanvas/GCanvas.podspec"
 ```
+
     cd YOUR_PROJECT/ios
     pod install
 
-
 ## Example As Usage
+
 ```javascript
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -128,8 +140,8 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import {GCanvasView, GImage} from '@flyskywhy/react-native-gcanvas';
-import {Asset} from 'expo-asset';
+import { GCanvasView, GImage } from '@flyskywhy/react-native-gcanvas';
+import { Asset } from 'expo-asset';
 
 export default class App extends Component {
   constructor(props) {
@@ -216,7 +228,7 @@ export default class App extends Component {
         });
       };
       let asset = await Asset.fromModule(
-        require('@flyskywhy/react-native-gcanvas/tools/build_website/assets/logo-gcanvas.png'),
+        require('@flyskywhy/react-native-gcanvas/tools/build_website/assets/logo-gcanvas.png')
       );
       imageRequire.src = asset.uri;
     }
@@ -271,54 +283,55 @@ const styles = StyleSheet.create({
 ```
 
 ## Alibaba Distribution
+
 ### GCanvas
 
-* iOS [GCanvas](https://cocoapods.org/pods/GCanvas) [![CocoaPods Version](https://badge.fury.io/co/GCanvas.svg)](https://badge.fury.io/co/GCanvas)
+- iOS [GCanvas](https://cocoapods.org/pods/GCanvas) [![CocoaPods Version](https://badge.fury.io/co/GCanvas.svg)](https://badge.fury.io/co/GCanvas)
 
-* Android com.taobao.gcanvas:core:1.1.0(publishing)
+- Android com.taobao.gcanvas:core:1.1.0(publishing)
 
 ### GCanvas Weex Component
 
-* iOS [WeexGcanvas](https://cocoapods.org/pods/WeexGcanvas) [![CocoaPods Version](https://badge.fury.io/co/WeexGcanvas.svg)](https://badge.fury.io/co/GCanvas)
+- iOS [WeexGcanvas](https://cocoapods.org/pods/WeexGcanvas) [![CocoaPods Version](https://badge.fury.io/co/WeexGcanvas.svg)](https://badge.fury.io/co/GCanvas)
 
-* Android com.taobao.gcanvas.bridges:weex-brigde 1.1.0 (publishing)
-
+- Android com.taobao.gcanvas.bridges:weex-brigde 1.1.0 (publishing)
 
 ## Features
+
 - Cross-platform, support popular iOS and Android.
 - High performance, accelerate graphic draw by OpenGL ES.
 - Provide JavaScript runtime, such as [Weex](https://github.com/apache/incubator-weex) and [ReactNative](https://github.com/facebook/react-native/). Convenient to use JavaScript API like HTML canvas.
 - Scalable Architecture, easy to implement a GCanvas bridge by yourself following the guide [Custom Native Bridge](https://alibaba.github.io/GCanvas/docs/Custom%20Bridge.html).
 - Small size.
 
-
 ## Introduction
 
 See the [Introduction to GCanvas](https://alibaba.github.io/GCanvas/docs/Developer's%20Guide.html) for a detailed introduction to GCanvas.
 
 ### Weex
+
 Follow [Weex Setup Guide](https://alibaba.github.io/GCanvas/docs/Integrate%20GCanvas%20on%20Weex.html) to integrate GCanvas on Weex.
 
 ### JavaScript
+
 Try our [Playground](https://alibaba.github.io/GCanvas/playground.html).
 
 GCanvas has browser-like canvas APIs, so almost all of the APIs are exactly same as HTML5 canvas. At this moment, we have already supported 90% of 2D APIs and 99% of WebGL APIs. You can find out those informations in [2D APIs](https://alibaba.github.io/GCanvas/docs/Graphics%202D.html) and [WebGL APIs](https://alibaba.github.io/GCanvas/docs/WebGL.html).
 
-
 ## Documentation
-Check [Documentation](https://alibaba.github.io/GCanvas/docs/Introduction.html) for more information.
 
+Check [Documentation](https://alibaba.github.io/GCanvas/docs/Introduction.html) for more information.
 
 ## Built With
 
-* [Freetype](https://www.freetype.org/) - Used for font rendering on Android
-
+- [Freetype](https://www.freetype.org/) - Used for font rendering on Android
 
 ## Changelog
 
 New Changelog record in [CHANGELOG](./docs/Changelog.md) for details.
 
 ## Opening Issues
+
 If you encounter a bug with GCanvas we would like to hear about it. Search the existing issues and try to make sure your problem doesn’t already exist before opening a new issue. It’s helpful if you include the version of GCanvas and OS you’re using. Please include a stack trace and reduced repro case when appropriate, too.
 
 ## Contributing
@@ -327,8 +340,8 @@ Please read [CONTRIBUTING](./docs/Contributing.md) for details on our code of co
 
 ## Authors
 
-* GCanvas Open Source Team
-* Li Zheng <flyskywhy@gmail.com>
+- GCanvas Open Source Team
+- Li Zheng <flyskywhy@gmail.com>
 
 ## License
 
